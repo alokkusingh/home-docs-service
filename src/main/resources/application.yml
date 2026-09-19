@@ -1,0 +1,54 @@
+application:
+    id: home-stack-docs
+spring:
+    application:
+        name: home-docs-service
+    jpa:
+        properties:
+            hibernate:
+                jdbc:
+                    time_zone: UTC
+    profiles:
+        active: devmysql
+    lifecycle:
+      timeout-per-shutdown-phase: 1m
+server:
+    servlet:
+        context-path: /home/api
+    compression:
+      enabled: true
+      min-response-size: 2KB
+    shutdown: graceful
+
+web:
+    cache-control:
+        max-age: 30
+management:
+    endpoint:
+        health:
+            probes:
+                enabled: true
+            show-details: always
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+    health:
+        livenessState:
+            enabled: true
+        readinessState:
+            enabled: true
+
+logging:
+    pattern:
+        dateformat: yyyy-MM-dd'T'HH:mm:ss.SSSXXX, UTC
+        console: '%d{"yyyy/MM/dd HH:mm:ss,SSS,UTC"}{GMT+0} [%p] [%t] %M\(%F:%L\) - %msg%n'
+
+springdoc:
+  api-docs:
+    enabled: true
+  #    path: /api-docs
+  enable-javadoc: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
