@@ -45,7 +45,11 @@ public class SecurityConfig {
                                     "/pdfs/tree",
                                     "/pdfs/stream",
                                     "/pdfs/stream/**",
-                                    "/pdfs/**"
+                                    "/pdfs/**",
+                                    "/docs/tree",
+                                    "/docs/stream",
+                                    "/docs/stream/**",
+                                    "/docs/**"
                             )
                             .hasAnyRole("ADMIN", "USER", "home_api_ro", "home_api_rw", "LOCALHOST");
 

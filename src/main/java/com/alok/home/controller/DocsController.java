@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pdfs")
+@RequestMapping({"/pdfs", "/docs"})
 @CrossOrigin(origins = "http://localhost:3000")
 public class DocsController {
 
