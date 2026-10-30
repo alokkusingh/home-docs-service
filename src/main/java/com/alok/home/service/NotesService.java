@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Service
-public class NoteService {
+public class NotesService {
 
     @Value("${notes.root-directory}")
     private String configuredPath;

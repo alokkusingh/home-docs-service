@@ -19,12 +19,12 @@ import java.util.Locale;
 import java.util.stream.Stream;
 
 @Service
-public class PdfService {
+public class DocsService {
 
     private final Path pdfRootDirectory = Paths.get("/Users/aloksingh/git/home-docs").toAbsolutePath().normalize();
     private final List<String> excludeRootDirs = List.of(".git", "temp");
 
-    public List<FileNode> getPdfTree() throws IOException {
+    public List<FileNode> getDocsTree() throws IOException {
         FileNode rootNode = buildTree(pdfRootDirectory, "");
         return rootNode.getChildren() != null ? rootNode.getChildren() : new ArrayList<>();
     }

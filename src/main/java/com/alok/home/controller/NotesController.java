@@ -1,7 +1,7 @@
 package com.alok.home.controller;
 
 import com.alok.home.dto.FileNode;
-import com.alok.home.service.NoteService;
+import com.alok.home.service.NotesService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,27 +11,27 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/notes")
-public class NoteController {
+public class NotesController {
 
-    private final NoteService noteService;
+    private final NotesService notesService;
 
-    public NoteController(NoteService noteService) {
-        this.noteService = noteService;
+    public NotesController(NotesService notesService) {
+        this.notesService = notesService;
     }
 
     @GetMapping("/tree")
     public List<FileNode> getFileTree() throws IOException {
-        return noteService.getFileTree();
+        return notesService.getFileTree();
     }
 
     @GetMapping("/content")
     public ResponseEntity<String> getNoteContent(@RequestParam String path) throws IOException {
-        return noteService.getNoteContent(path);
+        return notesService.getNoteContent(path);
     }
 
     @GetMapping("/images/{imageName}")
     public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
-        return noteService.getImage(imageName);
+        return notesService.getImage(imageName);
     }
 }
 
