@@ -51,6 +51,20 @@ public class PdfController {
                 }
             }
         }
+
+        // sort the files and directories alphabetically, with files first and then directories
+        if (node.getChildren() != null) {
+            node.getChildren().sort((a, b) -> {
+                if (a.isDirectory() && !b.isDirectory()) {
+                    return 1; // directories after files
+                } else if (!a.isDirectory() && b.isDirectory()) {
+                    return -1; // files before directories
+                } else {
+                    return a.getName().compareToIgnoreCase(b.getName()); // alphabetical order
+                }
+            });
+        }
+
         return node;
     }
 
