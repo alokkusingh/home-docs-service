@@ -17,7 +17,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
@@ -31,13 +30,14 @@ public class NoteController {
 
     private Path rootDirectory;
 
+    private final List<String> EXCLUDE_ROOT_DIRS = List.of("git", "docs");
+
     // 2. Initialize the path safely on startup
     @PostConstruct
     public void init() {
         this.rootDirectory = Paths.get(configuredPath).toAbsolutePath().normalize();
         System.out.println("INFO: Notes System initialized at root path: " + this.rootDirectory);
     }
-
 
     @GetMapping("/tree")
     public List<FileNode> getFileTree() throws IOException {
@@ -59,6 +59,11 @@ public class NoteController {
             try (Stream<Path> stream = Files.list(currentPath)) {
                 List<Path> paths = stream.toList();
                 for (Path p : paths) {
+                    // Exclude certain directories at the root level, but allow them if they are nested deeper in the structure
+                    if (EXCLUDE_ROOT_DIRS.contains(p.getFileName().toString()) && relativePath.isEmpty()) {
+                        continue; // Skip excluded directories
+                    }
+
                     String childRelative = relativePath.isEmpty() ? p.getFileName().toString() : relativePath + "/" + p.getFileName().toString();
 
                     if (Files.isDirectory(p) || p.getFileName().toString().endsWith(".md")) {
