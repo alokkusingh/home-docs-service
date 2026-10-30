@@ -57,7 +57,7 @@ public class NoteController {
 
         if (isDir) {
             try (Stream<Path> stream = Files.list(currentPath)) {
-                List<Path> paths = stream.collect(Collectors.toList());
+                List<Path> paths = stream.toList();
                 for (Path p : paths) {
                     String childRelative = relativePath.isEmpty() ? p.getFileName().toString() : relativePath + "/" + p.getFileName().toString();
 
@@ -66,6 +66,19 @@ public class NoteController {
                     }
                 }
             }
+        }
+
+        // sort the files and directories alphabetically, with files first and then directories
+        if (node.getChildren() != null) {
+            node.getChildren().sort((a, b) -> {
+                if (a.isDirectory() && !b.isDirectory()) {
+                    return 1; // directories after files
+                } else if (!a.isDirectory() && b.isDirectory()) {
+                    return -1; // files before directories
+                } else {
+                    return a.getName().compareToIgnoreCase(b.getName()); // alphabetical order
+                }
+            });
         }
         return node;
     }
