@@ -1,20 +1,18 @@
-# Home API Service 
-Home Stack API Service
+# Home Docs Service 
+Home Stack Docs and Notes Service
 
 ## Build
 ### Set JAVA_HOME (in case mvn run through terminal)
 ```shell
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 ### Build Application image
 ```shell
-protoc --proto_path=src --java_out=src/main/java src/main/resources/proto/getInvestmentsResponse.proto
-protoc --proto_path=src --java_out=src/main/java src/main/resources/proto/getInvestmentsRorMetricsResponse.proto
-protoc --proto_path=src --java_out=src/main/java src/main/resources/proto/getRawInvestmentsResponse.proto
+mvn clean package -X
 ```
 ```shell
- docker build --progress=plain -f Dockerfile -t alokkusingh/home-docs-service:latest -t alokkusingh/home-docs-service:1.0.0 .
+ docker build --progress=plain -f Dockerfile -t alokkusingh/home-docs-service:latest -t alokkusingh/home-docs-service:1.0.0 --build-arg JAR_FILE=target/home-docs-service-1.0.0-SNAPSHOT.jar .
 ```
 ```shell
 docker push alokkusingh/home-docs-service:latest

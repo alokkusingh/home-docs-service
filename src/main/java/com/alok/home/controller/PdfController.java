@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/docs/pdfs")
+@RequestMapping("/pdfs")
 @CrossOrigin(origins = "http://localhost:3000")
 public class PdfController {
 

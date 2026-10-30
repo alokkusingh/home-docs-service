@@ -1,5 +1,7 @@
 package com.alok.home.controller;
 
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -23,7 +25,19 @@ import java.util.stream.Stream;
 public class NoteController {
 
     // Path to the folder where your .md files are stored
-    private final Path rootDirectory = Paths.get("/Users/aloksingh/docs/OneNote/MyNote");
+    // 1. Inject the path configuration value dynamically
+    @Value("${notes.root-directory}")
+    private String configuredPath;
+
+    private Path rootDirectory;
+
+    // 2. Initialize the path safely on startup
+    @PostConstruct
+    public void init() {
+        this.rootDirectory = Paths.get(configuredPath).toAbsolutePath().normalize();
+        System.out.println("INFO: Notes System initialized at root path: " + this.rootDirectory);
+    }
+
 
     @GetMapping("/tree")
     public List<FileNode> getFileTree() throws IOException {

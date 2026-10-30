@@ -4,11 +4,11 @@
 <modelVersion>4.0.0</modelVersion>
 
 	<parent>
-       	<groupId>org.springframework.boot</groupId>
-       	<artifactId>spring-boot-starter-parent</artifactId>
-       	<version>3.2.0</version>
-       	<relativePath/> <!-- lookup parent from repository -->
-    </parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.5</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
 	<groupId>com.alok.home</groupId>
 	<artifactId>home-docs-service</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
@@ -17,8 +17,10 @@
 
 	<properties>
 		<maven.test.skip>true</maven.test.skip>
-		<java.version>21</java.version>
-		<lombok.version>1.18.22</lombok.version>
+		<maven.compiler.release>25</maven.compiler.release>
+		<maven.compiler.source>25</maven.compiler.source>
+		<maven.compiler.target>25</maven.compiler.target>
+		<lombok.version>1.18.40</lombok.version>
 		<home.commons.version>2.1.28</home.commons.version>
 	</properties>
 
@@ -182,6 +184,24 @@
 
 	<build>
 		<plugins>
+			<!-- add below plugin because for Java 25, alone spring boot plugin was not processing Lombok annotations-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.14.0</version>
+				<configuration>
+					<source>25</source>
+					<target>25</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.40</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -194,45 +214,41 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>21</source>
-					<target>21</target>
-					<compilerArgs>--enable-preview</compilerArgs>
-					<!--					<compilerArgs>&#45;&#45;enable-preview</compilerArgs>-->
-				</configuration>
-			</plugin>
 
 			<!-- compile proto file into java files. -->
-<!--			<plugin>-->
-<!--				<groupId>com.github.os72</groupId>-->
-<!--				<artifactId>protoc-jar-maven-plugin</artifactId>-->
-<!--				<version>3.6.0.1</version>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<phase>generate-sources</phase>-->
-<!--						<goals>-->
-<!--							<goal>run</goal>-->
-<!--						</goals>-->
-<!--						<configuration>-->
-<!--							<includeMavenTypes>direct</includeMavenTypes>-->
+			<!-- not supporting for Java 21, so generated using protoc cmd -->
+			<!--			<plugin>-->
+			<!--				<groupId>com.github.os72</groupId>-->
+			<!--				<artifactId>protoc-jar-maven-plugin</artifactId>-->
+			<!--				<version>3.11.4</version>-->
+			<!--				<executions>-->
+			<!--					<execution>-->
+			<!--						<phase>generate-sources</phase>-->
+			<!--						<goals>-->
+			<!--							<goal>run</goal>-->
+			<!--						</goals>-->
+			<!--						<configuration>-->
+			<!--							<includeMavenTypes>direct</includeMavenTypes>-->
 
-<!--							<inputDirectories>-->
-<!--								<include>src/main/resources/proto</include>-->
-<!--							</inputDirectories>-->
+			<!--							<inputDirectories>-->
+			<!--								<include>src/main/resources/proto</include>-->
+			<!--							</inputDirectories>-->
 
-<!--							<outputTargets>-->
-<!--								<outputTarget>-->
-<!--									<type>java</type>-->
-<!--									<outputDirectory>src/main/java</outputDirectory>-->
-<!--								</outputTarget>-->
-<!--							</outputTargets>-->
-<!--						</configuration>-->
-<!--					</execution>-->
-<!--				</executions>-->
-<!--			</plugin>-->
+			<!--							<outputTargets>-->
+			<!--								<outputTarget>-->
+			<!--									<type>java</type>-->
+			<!--									<outputDirectory>src/main/java</outputDirectory>-->
+			<!--								</outputTarget>-->
+			<!--								<outputTarget>-->
+			<!--									<type>grpc-java</type>-->
+			<!--									<pluginArtifact>io.grpc:protoc-gen-grpc-java:1.66.0</pluginArtifact>-->
+			<!--									<outputDirectory>src/main/java</outputDirectory>-->
+			<!--								</outputTarget>-->
+			<!--							</outputTargets>-->
+			<!--						</configuration>-->
+			<!--					</execution>-->
+			<!--				</executions>-->
+			<!--			</plugin>-->
 		</plugins>
 	</build>
 

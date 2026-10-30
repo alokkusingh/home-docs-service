@@ -33,3 +33,6 @@ spring:
                 id:
                     new_generator_mappings: true
         show-sql: false
+
+notes:
+    root-directory: /Users/aloksingh/docs/OneNote/MyNote

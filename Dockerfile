@@ -1,4 +1,4 @@
-FROM arm64v8/openjdk:17
+FROM openjdk:25-rc-jdk-oraclelinux8
 MAINTAINER Alok Singh (alok.ku.singh@gmail.com)
 RUN groupadd -g 600 singh && useradd -u 601 -g 600 alok
 ARG JAR_FILE
@@ -7,8 +7,6 @@ RUN mkdir -p /home/alok
 RUN chown -R alok /opt
 RUN chown -R alok /home/alok
 USER alok
-COPY src/main/resources/keystore.jks /home/alok/keystore.jks
-COPY src/main/resources/truststore.jks /home/alok/trustore.jks
 COPY ${JAR_FILE} /opt/app.jar
 EXPOSE 8081
 WORKDIR /opt
