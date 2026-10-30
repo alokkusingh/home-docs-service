@@ -44,8 +44,8 @@ public class PdfController {
                 for (Path p : paths) {
                     String childRelative = relativePath.isEmpty() ? p.getFileName().toString() : relativePath + "/" + p.getFileName().toString();
 
-                    // Filter: Only include sub-directories or actual PDF files
-                    if (Files.isDirectory(p) || p.getFileName().toString().toLowerCase().endsWith(".pdf")) {
+                    // Filter: Only include sub-directories or actual PDF files or actual JPG files or actual PNG files. This ensures we don't include other file types.
+                    if (Files.isDirectory(p) || p.getFileName().toString().toLowerCase().endsWith(".pdf") || p.getFileName().toString().toLowerCase().endsWith(".jpg") || p.getFileName().toString().toLowerCase().endsWith(".png")) {
                         node.addChild(buildTree(p, childRelative));
                     }
                 }
@@ -68,8 +68,13 @@ public class PdfController {
         }
 
         Resource resource = new UrlResource(filePath.toUri());
+        // If the file is PDF, we can set the content type to application/pdf. For other file types, you might want to handle them differently or set a generic content type.
+        String contentType = Files.probeContentType(filePath);
+        if (contentType == null) {
+            contentType = "application/octet-stream"; // Default binary type if unknown
+        }
         return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_PDF)
+                .contentType(MediaType.valueOf(contentType))
                 // inline tells the browser to display it inside our frame instead of downloading it
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filePath.getFileName().toString() + "\"")
                 .body(resource);
